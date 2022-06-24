@@ -3,42 +3,55 @@ package com.example.DataCollection.Model;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
+@Table(name = "Movie")
+@Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Entity
-public class Movie {
+public class Movie implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "movie_id", nullable = false)
-    private Integer id;
-
-    @Column(name = "title", length = 50)
+    private Long movieId;
+    @Column(name = "title")
     private String title;
-
-    @Column(name = "genre", length = 50)
+    @Column(name = "genre")
     private String genre;
-
-    @Column(name = "popularity", precision = 131089)
+    @Column(name = "popularity")
     private BigDecimal popularity;
-
     @Column(name = "adult")
     private Boolean adult;
-
-    @Column(name = "status", length = 50)
+    @Column(name = "status")
     private String status;
+    @Column(name = "release_date")
+    private LocalDate release_date;
+
+    public Movie(Long movieId, String title, String genre, BigDecimal popularity, Boolean adult, String status, LocalDate release_date) {
+        this.movieId = movieId;
+        this.title = title;
+        this.genre = genre;
+        this.popularity = popularity;
+        this.adult = adult;
+        this.status = status;
+        this.release_date = release_date;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Movie movie = (Movie) o;
-        return id != null && Objects.equals(id, movie.id);
+        return movieId != null && Objects.equals(movieId, movie.movieId);
     }
 
     @Override

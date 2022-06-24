@@ -1,21 +1,29 @@
 package com.example.DataCollection.Controller;
 
-import com.example.DataCollection.Service.MovieServiceImpl;
-import lombok.Data;
-
-import org.springframework.http.ResponseEntity;
+import com.example.DataCollection.Model.Movie;
+import com.example.DataCollection.Service.MovieService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/fill")
-@Data
 public class MovieController {
-    final MovieServiceImpl movieService;
+    private final MovieService movieService;
 
-
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
 
     @GetMapping("/get-now-playing")
-    public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok().body(movieService.getAllMovies());
+    public List<Movie> listMovies() {
+        return movieService.getMovies();
     }
+
+    @PostMapping("/now-playing")
+    public void addMovie(@RequestBody Movie movie) {
+        movieService.addNewMovie(movie);
+    }
+
+
 }
